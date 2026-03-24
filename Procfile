@@ -1,0 +1,1 @@
+web: gunicorn agricInsur.wsgi:application
