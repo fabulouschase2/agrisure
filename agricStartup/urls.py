@@ -22,3 +22,4 @@ urlpatterns = [
     path('interswitch/verify-account/', views.verify_account),
     path('interswitch/update-loan-status/', views.update_loan_status),
 ]
+
