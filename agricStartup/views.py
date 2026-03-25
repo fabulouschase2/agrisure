@@ -7,6 +7,9 @@ from .services import (
     calculate_yield, calculate_risk, loan_decision,
     calculate_profit, get_weather_factor
 )
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from .interswitch_services import get_customer_demographics, get_credit_score
 
 @api_view(['POST'])
 def register(request):
@@ -116,3 +119,29 @@ def request_loan(request):
         "loan_decision": decision,
         "profit": round(profit, 2)
     }, status=status.HTTP_201_CREATED)
+
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def verify_customer(request):
+    """Get demographic data from Interswitch."""
+    id_type = request.data.get('identificationType')
+    id_number = request.data.get('identificationNumber')
+    
+    if not id_type or not id_number:
+        return Response({'error': 'identificationType and identificationNumber required'}, status=400)
+    
+    result = get_customer_demographics(id_type, id_number)
+    return Response(result)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def credit_score(request):
+    """Get credit score for a customer."""
+    msisdn = request.query_params.get('msisdn')
+    if not msisdn:
+        return Response({'error': 'msisdn query parameter required'}, status=400)
+    
+    result = get_credit_score(msisdn)
+    return Response(result)
