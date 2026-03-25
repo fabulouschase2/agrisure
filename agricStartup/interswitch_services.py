@@ -10,6 +10,7 @@ def get_customer_demographics(identification_type, identification_number):
         'Authorization': AUTH_HEADER,
         'Content-Type': 'application/json'
     }
+    
     payload = {
         'identificationType': identification_type,
         'identificationNumber': identification_number
