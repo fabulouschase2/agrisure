@@ -42,6 +42,7 @@ ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
 INSTALLED_APPS = [
     'agricStartup',
     'rest_framework',
+    'rest_framework_simplejwt',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

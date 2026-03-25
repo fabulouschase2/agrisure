@@ -25,9 +25,6 @@ class FarmInput(models.Model):
     season_duration = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return f"{self.farmer.username} - {self.crop.name}"
-
 class LoanRequest(models.Model):
     farmer = models.ForeignKey(Farmer, on_delete=models.CASCADE)
     amount_requested = models.FloatField()
@@ -38,6 +35,5 @@ class LoanRequest(models.Model):
     ])
     risk_level = models.CharField(max_length=20)
     created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"{self.farmer.username} - {self.status}"
+    # Interswitch loan ID (if you store it)
+    interswitch_loan_id = models.CharField(max_length=50, blank=True, null=True)

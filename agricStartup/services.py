@@ -27,25 +27,27 @@ def get_weather_factor(weather):
         return 1.2
     elif weather == "bad":
         return 0.7
-    return 1.0  # normal
+    return 1.0
 
-def enhanced_risk_score(input_cost, predicted_yield, credit_score, financial_history):
+def enhanced_risk_score(input_cost, predicted_yield, credit_score):
     """
-    Combine loan-to-revenue ratio with external credit data.
+    Combine your ratio risk with Interswitch credit score.
+    credit_score: integer (e.g., 0-100) or None if unavailable.
     """
     ratio_risk = calculate_risk(input_cost, predicted_yield)
-    
-    # Adjust risk based on credit score (higher score = lower risk)
+
+    # Map credit score to risk level
     if credit_score is not None and credit_score > 50:
         credit_risk = "Low"
-    elif credit_score and credit_score > 30:
+    elif credit_score is not None and credit_score > 30:
         credit_risk = "Medium"
     else:
-        credit_risk = "High"
-    
-    # Combine both risks (simplified example)
-    if ratio_risk == "Low" and credit_risk == "Low":
-        return "Low"
-    elif ratio_risk == "High" or credit_risk == "High":
+        credit_risk = "High"   # missing or low score
+
+    # Combine (priority: if either is High -> High, if both Low -> Low, else Medium)
+    if ratio_risk == "High" or credit_risk == "High":
         return "High"
-    return "Medium"
+    elif ratio_risk == "Low" and credit_risk == "Low":
+        return "Low"
+    else:
+        return "Medium"
